@@ -1,6 +1,6 @@
 package com.springboot1.Produtos.resourses;
 
-import com.springboot1.Produtos.exception.RegrasDeNegocio;
+import com.springboot1.Produtos.exception.TratamentoID;
 import com.springboot1.Produtos.models.ItemPedido;
 import com.springboot1.Produtos.models.Pedido;
 import com.springboot1.Produtos.models.Produto;
@@ -21,6 +21,8 @@ import java.util.List;
 @CrossOrigin(origins = "*")              // <------ Restrição na web * significa que qualquer site podera entrar
 public class ItemPedidoResource {
 
+    TratamentoID tratamentoID = new TratamentoID();
+
     @Autowired
     ItemPedidoService itemPedidoService;
 
@@ -30,10 +32,6 @@ public class ItemPedidoResource {
     @Autowired
     ProdutoService produtoService;
 
-    private void verificaIdItemPedido(long id){
-        if(itemPedidoService.findById(id) == null)
-            throw new RegrasDeNegocio( "Item nao encontrado com esse id " + id);
-    }
 
     // METODO GET API
     @GetMapping("/itempedido")
@@ -48,7 +46,6 @@ public class ItemPedidoResource {
     @ApiOperation(value = "Pedido unico")
     public ResponseEntity<ItemPedido> listaPedidoUnico(@PathVariable(value="id") long id){
         ItemPedido itemPedido = itemPedidoService.findById(id);
-
         return ResponseEntity.ok().body(itemPedido);
     }
 
@@ -68,21 +65,16 @@ public class ItemPedidoResource {
     @DeleteMapping("/itempedido/{id}")
     @ApiOperation(value = "delete item")
     public ResponseEntity<ItemPedido> deletar(@PathVariable(value = "id") long id) {
-        verificaIdItemPedido(id);
+        tratamentoID.verificaIdItemPedido(id);
         ItemPedido itemPedido = itemPedidoService.findById(id);
         itemPedidoService.delete(itemPedido);
         return ResponseEntity.ok().body(itemPedido);
     }
 
-    @PutMapping("/itempedido")
-    @ApiOperation(value = "Atualiza item")
-    public ItemPedido atualizaItem(@RequestBody ItemPedido itemPedido){
-
-        return itemPedidoService.save(itemPedido);
-    }
-
     @PutMapping("/itempedido/{id}")
+    @ApiOperation(value = "Atualiza item")
     public void atualizaItemPedido(@PathVariable(value = "id")long id){
+        tratamentoID.verificaIdItemPedido(id);
         ItemPedido itemPedido = itemPedidoService.findById(id);
         itemPedidoService.save(itemPedido);
     }

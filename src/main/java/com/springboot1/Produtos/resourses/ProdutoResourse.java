@@ -2,7 +2,7 @@ package com.springboot1.Produtos.resourses;
 
 //CONTROLLER
 
-import com.springboot1.Produtos.exception.RegrasDeNegocio;
+import com.springboot1.Produtos.exception.TratamentoID;
 import com.springboot1.Produtos.models.Produto;
 import com.springboot1.Produtos.service.ProdutoService;
 import io.swagger.annotations.Api;
@@ -19,13 +19,10 @@ import java.util.List;
 @CrossOrigin(origins = "*")              // <------ Restrição na web * significa que qualquer site podera entrar
 public class ProdutoResourse {
 
+    TratamentoID tratamentoID = new TratamentoID();
+
     @Autowired
     ProdutoService produtoService;
-
-    private void verificaIdProduto(long id){
-        if(produtoService.findById(id) == null)
-            throw new RegrasDeNegocio( "Produto nao encontrado com esse id " + id);
-    }
 
     // METODO GET API
     @GetMapping("/produtos")
@@ -39,7 +36,6 @@ public class ProdutoResourse {
     @GetMapping("/produtos/{id}")
     @ApiOperation(value = "Produto unico")
     public ResponseEntity<Produto> listaProdutoUnico(@PathVariable(value="id") long id){
-        verificaIdProduto(id);
         Produto produto = produtoService.findById(id);
         return ResponseEntity.ok().body(produto);
     }
@@ -55,7 +51,7 @@ public class ProdutoResourse {
     @DeleteMapping("/produto/{id}")
     @ApiOperation(value = "delete produto")
     public ResponseEntity<Produto> deletar(@PathVariable(value = "id") long id) {
-        verificaIdProduto(id);
+        tratamentoID.verificaIdProduto(id);
         Produto produto = produtoService.findById(id);
         produtoService.delete(produto);
         return ResponseEntity.ok().body(produto);
@@ -63,6 +59,7 @@ public class ProdutoResourse {
 
     @PutMapping("/produto/{id}")
     public void atualizaProdutoId(@PathVariable(value = "id")long id){
+        tratamentoID.verificaIdProduto(id);
         Produto produto = produtoService.findById(id);
         produtoService.save(produto);
     }

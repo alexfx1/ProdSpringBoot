@@ -1,7 +1,7 @@
 package com.springboot1.Produtos.resourses;
 
 
-import com.springboot1.Produtos.exception.RegrasDeNegocio;
+import com.springboot1.Produtos.exception.TratamentoID;
 import com.springboot1.Produtos.models.Cliente;
 import com.springboot1.Produtos.service.ClienteService;
 import io.swagger.annotations.Api;
@@ -22,10 +22,7 @@ import java.util.List;
 @CrossOrigin("*")
 public class ClienteResourse {
 
-    private void verificaIdCliente(long id){
-        if(clienteService.findById(id) == null)
-            throw new RegrasDeNegocio( "Cliente nao encontrado com esse id " + id);
-    }
+    TratamentoID tratamentoID = new TratamentoID();
     //500
 
     @Autowired
@@ -41,7 +38,6 @@ public class ClienteResourse {
     @GetMapping("/clientes/{id}")
     @ApiOperation(value = "Cliente unico")
     public ResponseEntity<Cliente> listaClienteUnico(@PathVariable(value="id") long id){
-        verificaIdCliente(id);
         Cliente cliente = clienteService.findById(id);
         return ResponseEntity.ok().body(cliente);
     }
@@ -55,17 +51,10 @@ public class ClienteResourse {
     @DeleteMapping("/cliente/{id}")
     @ApiOperation(value = "delete cliente")
     public ResponseEntity<Cliente> deletar(@PathVariable(value = "id") long id) {
-        verificaIdCliente(id);
+        tratamentoID.verificaIdCliente(id);
         Cliente cliente = clienteService.findById(id);
         clienteService.delete(cliente);
         return ResponseEntity.ok().body(cliente);
-    }
-
-    @PutMapping("/cliente")
-    @ApiOperation(value = "Atualiza cliente")
-    public Cliente atualizaCliente(@RequestBody Cliente cliente){
-        verificaIdCliente(cliente.getId());
-        return clienteService.save(cliente);
     }
 
     @PutMapping("/cliente/{id}")
@@ -73,4 +62,11 @@ public class ClienteResourse {
         Cliente cliente = clienteService.findById(id);
         return clienteService.save(cliente);
     }
+
+    /*@PutMapping("/cliente")
+    @ApiOperation(value = "Atualiza cliente")
+    public Cliente atualizaCliente(@RequestBody Cliente cliente){
+        tratamentoID.verificaIdCliente(cliente.getId());
+        return clienteService.save(cliente);
+    }*/
 }

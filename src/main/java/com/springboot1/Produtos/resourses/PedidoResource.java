@@ -1,5 +1,6 @@
 package com.springboot1.Produtos.resourses;
 
+import com.springboot1.Produtos.exception.TratamentoID;
 import com.springboot1.Produtos.models.Cliente;
 import com.springboot1.Produtos.models.Pedido;
 import com.springboot1.Produtos.service.ClienteService;
@@ -22,6 +23,8 @@ import java.util.List;
 @CrossOrigin(origins = "*")              // <------ Restrição na web * significa que qualquer site podera entrar
 public class PedidoResource {
 
+    TratamentoID tratamentoID = new TratamentoID();
+
     @Autowired
     PedidoService pedidoService;
 
@@ -40,7 +43,6 @@ public class PedidoResource {
     @ApiOperation(value = "Pedido unico")
     public ResponseEntity<Pedido> listaPedidoUnico(@PathVariable(value="id") long id){
         Pedido pedido = pedidoService.findById(id);
-
         return ResponseEntity.ok().body(pedido);
     }
 
@@ -60,19 +62,14 @@ public class PedidoResource {
     @DeleteMapping("/pedido/{id}")
     @ApiOperation(value = "deleta um pedido")
     public void deletaPedido(@PathVariable(value = "id")long id){
+        tratamentoID.verificaIdPedido(id);
         Pedido pedido = pedidoService.findById(id);
         pedidoService.delete(pedido);
     }
 
-    @PutMapping("/pedido")
-    @ApiOperation(value = "Atualiza pedido")
-    public Pedido atualizaPedido(@RequestBody Pedido pedido){
-
-        return pedidoService.save(pedido);
-    }
-
     @PutMapping("/pedido/{id}")
     public void atualizaProdutoId(@PathVariable(value = "id")long id){
+        tratamentoID.verificaIdPedido(id);
         Pedido pedido = pedidoService.findById(id);
         pedidoService.save(pedido);
     }
