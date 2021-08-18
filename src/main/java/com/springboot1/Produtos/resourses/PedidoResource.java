@@ -35,11 +35,12 @@ public class PedidoResource {
         return ResponseEntity.ok().body(list);
     }
 
-    // GET SOMENTE 1 Produto
+    // GET SOMENTE 1 Pedido
     @GetMapping("/pedidos/{id}")
     @ApiOperation(value = "Pedido unico")
     public ResponseEntity<Pedido> listaPedidoUnico(@PathVariable(value="id") long id){
         Pedido pedido = pedidoService.findById(id);
+
         return ResponseEntity.ok().body(pedido);
     }
 

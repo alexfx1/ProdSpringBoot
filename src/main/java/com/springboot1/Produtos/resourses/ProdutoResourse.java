@@ -2,11 +2,13 @@ package com.springboot1.Produtos.resourses;
 
 //CONTROLLER
 
+import com.springboot1.Produtos.exception.RegrasDeNegocio;
 import com.springboot1.Produtos.models.Produto;
 import com.springboot1.Produtos.service.ProdutoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,18 +22,26 @@ public class ProdutoResourse {
     @Autowired
     ProdutoService produtoService;
 
+    private void verificaIdProduto(long id){
+        if(produtoService.findById(id) == null)
+            throw new RegrasDeNegocio( "Produto nao encontrado com esse id " + id);
+    }
+
     // METODO GET API
-    @GetMapping("/produto")
-    @ApiOperation(value = "Lista de produtos")
-    public List<Produto> listaProdutos(){
-        return produtoService.findAll();
+    @GetMapping("/produtos")
+    @ApiOperation("Listar produtos")
+    public ResponseEntity<List<Produto>> listaProdutos(){
+        List<Produto> list = produtoService.findAll();
+        return ResponseEntity.ok().body(list);
     }
 
     // GET SOMENTE 1 Produto
-    @GetMapping("/produto/{id}")
+    @GetMapping("/produtos/{id}")
     @ApiOperation(value = "Produto unico")
-    public Produto listaProdutoUnico(@PathVariable(value="id") long id){
-        return produtoService.findById(id);
+    public ResponseEntity<Produto> listaProdutoUnico(@PathVariable(value="id") long id){
+        verificaIdProduto(id);
+        Produto produto = produtoService.findById(id);
+        return ResponseEntity.ok().body(produto);
     }
 
     // SALVAR NOVO PRODUTO
@@ -43,17 +53,12 @@ public class ProdutoResourse {
 
     //NAO EH POR ID, NO POST TEM Q COLOCAR OS DADOS
     @DeleteMapping("/produto/{id}")
-    @ApiOperation(value = "deleta um produto")
-    public void deletaProduto(@PathVariable(value = "id")long id){
+    @ApiOperation(value = "delete produto")
+    public ResponseEntity<Produto> deletar(@PathVariable(value = "id") long id) {
+        verificaIdProduto(id);
         Produto produto = produtoService.findById(id);
         produtoService.delete(produto);
-    }
-
-    @PutMapping("/produto")
-    @ApiOperation(value = "Atualiza produto")
-    public Produto atualizaProduto(@RequestBody Produto produto){
-
-        return produtoService.save(produto);
+        return ResponseEntity.ok().body(produto);
     }
 
     @PutMapping("/produto/{id}")
@@ -61,5 +66,4 @@ public class ProdutoResourse {
         Produto produto = produtoService.findById(id);
         produtoService.save(produto);
     }
-
 }

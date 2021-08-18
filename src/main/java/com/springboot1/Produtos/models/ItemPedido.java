@@ -1,5 +1,6 @@
 package com.springboot1.Produtos.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ public class ItemPedido {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_item_pedido")
     private long id;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_pedido")
     private Pedido pedido;
@@ -31,6 +33,7 @@ public class ItemPedido {
     @Column(name = "desconto", nullable = false)
     private BigDecimal desconto;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "produtoId")
     private Produto produto;

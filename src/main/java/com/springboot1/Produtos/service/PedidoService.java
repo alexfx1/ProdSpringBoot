@@ -40,12 +40,15 @@ public class PedidoService {
 
         if(pedido.getCliente().getEndereco().getEstado() == UF.GO){
             frete = frete.multiply(val1);
+            pedido.setFrete(frete);
         }
         else if(pedido.getCliente().getEndereco().getEstado() == UF.TO){
             frete = frete.multiply(val2);
+            pedido.setFrete(frete);
         }
         else {
             frete = frete.multiply(val3);
+            pedido.setFrete(frete);
         }
     }
 }

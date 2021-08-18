@@ -1,5 +1,6 @@
 package com.springboot1.Produtos.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.springboot1.Produtos.enums.Status;
 import lombok.*;
 
@@ -24,6 +25,7 @@ public class Pedido {
     private Status status;
 
     // chave estrangeira
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
@@ -34,12 +36,9 @@ public class Pedido {
     @Column(name = "frete", nullable = false)
     private BigDecimal frete;
 
-    /*@OneToOne
-    @JoinColumn(name = "itemPedido", referencedColumnName = "id", nullable = false)
-    private ItemPedido itemPedidoId;*/
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pedido")
+    /*@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pedido")
     private List<ItemPedido> listaItemPedido(){
         return listaItemPedido();
-    };
+    };*/
 }
