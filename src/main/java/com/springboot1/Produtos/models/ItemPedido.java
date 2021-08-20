@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Entity
 @Getter
@@ -19,19 +18,20 @@ public class ItemPedido {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_item_pedido")
     private long id;
 
+    //modificar aq
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_pedido")
     private Pedido pedido;
 
     @Column(name = "quantidade", nullable = false)
-    private Integer quantidade;
+    private double quantidade;
 
     @Column(name = "valor",nullable = false)
-    private BigDecimal valor;
+    private double valor;
 
     @Column(name = "desconto", nullable = false)
-    private BigDecimal desconto;
+    private double desconto;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.LAZY)

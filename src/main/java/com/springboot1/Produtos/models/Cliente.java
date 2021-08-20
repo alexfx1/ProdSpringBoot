@@ -3,7 +3,6 @@ package com.springboot1.Produtos.models;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "TB_CLIENTE")

@@ -31,14 +31,18 @@ public class Pedido {
     private Cliente cliente;
 
     @Column(name = "desconto", nullable = false)
-    private BigDecimal desconto;
+    private double desconto;
 
     @Column(name = "frete", nullable = false)
-    private BigDecimal frete;
+    private double frete;
 
+    @Column(name = "valorTotal")
+    private double valorTotal;
 
-    /*@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pedido")
-    private List<ItemPedido> listaItemPedido(){
-        return listaItemPedido();
-    };*/
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "pedidoId", nullable = false)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pedido")
+    private List<ItemPedido> itens(){
+        return itens();
+    }
 }

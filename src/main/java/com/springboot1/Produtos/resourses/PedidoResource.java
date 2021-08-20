@@ -2,8 +2,10 @@ package com.springboot1.Produtos.resourses;
 
 import com.springboot1.Produtos.exception.TratamentoID;
 import com.springboot1.Produtos.models.Cliente;
+import com.springboot1.Produtos.models.ItemPedido;
 import com.springboot1.Produtos.models.Pedido;
 import com.springboot1.Produtos.service.ClienteService;
+import com.springboot1.Produtos.service.ItemPedidoService;
 import com.springboot1.Produtos.service.PedidoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,6 +33,9 @@ public class PedidoResource {
     @Autowired
     ClienteService clienteService;
 
+    @Autowired
+    ItemPedidoService itemPedidoService;
+
     @GetMapping("/pedidos")
     @ApiOperation("Listar pedidos")
     public ResponseEntity<List<Pedido>> listaPedidos(){
@@ -54,7 +59,10 @@ public class PedidoResource {
         Cliente cliente = clienteService.findById(pedido.getCliente().getId());
         pedido.setCliente(cliente);
 
-        pedidoService.calcFrete(pedido.getFrete());
+//        ItemPedido itemPedido = itemPedidoService.findById(pedido.getItemPedido().getId());
+//        pedido.setItemPedido(itemPedido);
+
+        // Frete ----> pedidoService.calcFrete(pedido.getFrete());
         return pedidoService.save(pedido);
     }
 

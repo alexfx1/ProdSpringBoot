@@ -3,7 +3,6 @@ package com.springboot1.Produtos.models;
 import lombok.*;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "TB_PRODUTO")
@@ -26,8 +25,11 @@ public class Produto /*implements Serializable*/ {
     private String marca;
 
     @Column(name = "desconto")
-    private BigDecimal desconto;
+    private double desconto;
 
     @Column(name = "valor", nullable = false)
-    private BigDecimal valor;
+    private double valor;
+
+    @Column(name = "total")
+    private double total;
 }

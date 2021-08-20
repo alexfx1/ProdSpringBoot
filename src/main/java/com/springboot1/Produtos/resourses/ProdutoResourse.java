@@ -44,6 +44,9 @@ public class ProdutoResourse {
     @PostMapping("/produto")
     @ApiOperation(value = "Salva um produto")
     public Produto salvaProduto(@RequestBody Produto produto){
+        //calculo do preco
+        double total = produtoService.precoFinal(produto.getValor(),produto.getDesconto());
+        produto.setTotal(total);
         return produtoService.save(produto);
     }
 

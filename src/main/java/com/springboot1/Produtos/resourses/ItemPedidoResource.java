@@ -52,13 +52,14 @@ public class ItemPedidoResource {
     @PostMapping("/itempedido")
     @ApiOperation(value = "Salva um item")
     public ItemPedido salvaItem(@RequestBody ItemPedido itemPedido){
-        //recupera o pedido
-        Pedido pedido = pedidoService.findById(itemPedido.getPedido().getId());
-        itemPedido.setPedido(pedido);
-
         //recupera o produto
         Produto produto = produtoService.findById(itemPedido.getProduto().getId());
         itemPedido.setProduto(produto);
+
+
+        double Vtotal = itemPedidoService.precoFinalItem(produto,itemPedido.getQuantidade(),itemPedido.getDesconto());
+        itemPedido.setValor(Vtotal);
+
         return itemPedidoService.save(itemPedido);
     }
 

@@ -30,4 +30,10 @@ public class ProdutoService {
     public void delete(@RequestBody Produto produto){
         produtoRepository.delete(produto);
     }
+
+    public double precoFinal(double preco, double desconto){
+        double total;
+        total = preco - desconto;
+        return total;
+    }
 }
