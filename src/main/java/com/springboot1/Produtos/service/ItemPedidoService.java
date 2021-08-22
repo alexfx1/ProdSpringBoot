@@ -35,6 +35,6 @@ public class ItemPedidoService {
         double precoFinal;
         double vp = produto.getTotal();
         precoFinal = vp * quantidade - desconto;
-        return  precoFinal;
+        return precoFinal;
     }
 }

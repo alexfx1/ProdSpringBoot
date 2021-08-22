@@ -40,9 +40,7 @@ public class Pedido {
     private double valorTotal;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JoinColumn(name = "pedidoId", nullable = false)
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pedido")
-    private List<ItemPedido> itens(){
-        return itens();
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "itemPedido_id", nullable = false)
+    private ItemPedido itemPedido;
 }

@@ -18,23 +18,17 @@ public class ItemPedido {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_item_pedido")
     private long id;
 
-    //modificar aq
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_pedido")
-    private Pedido pedido;
-
     @Column(name = "quantidade", nullable = false)
     private double quantidade;
 
-    @Column(name = "valor",nullable = false)
+    @Column(name = "valor", nullable = false)
     private double valor;
 
     @Column(name = "desconto", nullable = false)
     private double desconto;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "produtoId")
     private Produto produto;
 

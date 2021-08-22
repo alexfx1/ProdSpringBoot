@@ -59,10 +59,16 @@ public class PedidoResource {
         Cliente cliente = clienteService.findById(pedido.getCliente().getId());
         pedido.setCliente(cliente);
 
-//        ItemPedido itemPedido = itemPedidoService.findById(pedido.getItemPedido().getId());
-//        pedido.setItemPedido(itemPedido);
+        //recupera o itempedido
+        ItemPedido itemPedido = itemPedidoService.findById(pedido.getItemPedido().getId());
+        pedido.setItemPedido(itemPedido);
 
-        // Frete ----> pedidoService.calcFrete(pedido.getFrete());
+        double precoFinal = pedidoService.valorFinal(itemPedido,pedido.getDesconto());
+        pedido.setValorTotal(precoFinal);
+
+        double valorTotal = pedidoService.calFrete(precoFinal);
+        pedido.setFrete(valorTotal);
+
         return pedidoService.save(pedido);
     }
 

@@ -1,5 +1,7 @@
 package com.springboot1.Produtos.service;
 
+import com.springboot1.Produtos.enums.UF;
+import com.springboot1.Produtos.models.ItemPedido;
 import com.springboot1.Produtos.models.Pedido;
 import com.springboot1.Produtos.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,4 +32,26 @@ public class PedidoService {
         pedidoRepository.delete(pedido);
     }
 
+    public double valorFinal(ItemPedido itemPedido, double desconto){
+        double vI = itemPedido.getValor();
+        double vf;
+        vf = vI - desconto;
+        return vf;
+    }
+
+    public double calFrete(double valorFinal){
+        Pedido pedido = new Pedido();
+        if(pedido.getCliente().getEndereco().getEstado().equals(UF.GO)){
+            valorFinal = (valorFinal*1.1);
+            return valorFinal;
+        }
+        else if(pedido.getCliente().getEndereco().getEstado().equals(UF.MG)){
+            valorFinal = valorFinal*1.3;
+            return valorFinal;
+        }
+        else{
+            valorFinal = valorFinal*1.5;
+            return valorFinal;
+        }
+    }
 }
